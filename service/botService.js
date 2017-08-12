@@ -19,7 +19,7 @@ const botService = {
     }
 };
 
-export default botService;
+module.exports = botService;
 
 
 
