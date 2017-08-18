@@ -16,6 +16,21 @@ function getPmProcessInfo(stdout) {
 }
 
 const projectService = {
+    projectPath : "",
+
+    buildProject : function () {
+        return new Promise((resolve, reject) => {
+            exec("git pull", function (err, stdout, stderr) {
+                if (err) {
+                    reject(err);
+                } else if (stderr) {
+                    reject(stderr);
+                }
+
+                resolve(pm);
+            });
+        }).then(this.startProject);
+    },
 
     showStatus : function () {
         return new Promise((resolve, reject) => {
@@ -81,6 +96,6 @@ const projectService = {
             });
         });
     }
-}
+};
 
 module.exports = projectService;
