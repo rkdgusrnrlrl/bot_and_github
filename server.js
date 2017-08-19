@@ -18,8 +18,9 @@ app.get('/', function (req, res) {
 app.post('/github/build/bot', function (req, res) {
 
     co(function *() {
-        const status = projectService.buildProject();
+        const status = yield projectService.buildProject();
         console.log(status);
+        res.send(status);
     }).catch((err) => {
         res.send(err);
     });
