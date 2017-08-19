@@ -8,13 +8,22 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const projectService = require('./service/projectService');
+const co = require('co');
+
 app.get('/', function (req, res) {
     res.send('Hello World!')
 });
 
 app.post('/github/build/bot', function (req, res) {
-    console.log(req.body);
-    res.send('Hello World!');
+
+    co(function *() {
+        const status = projectService.buildProject();
+        console.log(status);
+    }).catch((err) => {
+        res.send(err);
+    });
+
 });
 
 app.listen(80, function () {
