@@ -9,10 +9,12 @@ function getPmProcessInfo(stdout) {
     const str = stdout;
     const menuStrs = "│ App name │ id │ mode │ pid   │ status │ restart │ uptime │ cpu │ mem       │ user         │ watching";
     const menuArr = menuStrs.split("│").map((data) => data.trim());
-    const valueArr = str.split("│").map((data) => data.trim());
 
-    const pm = _.zipObject(menuArr, valueArr);
-    return pm;
+    if (str.trim() !== "" ) {
+        const valueArr = str.split("│").map((data) => data.trim());
+        const pm = _.zipObject(menuArr, valueArr);
+        return pm;
+    }
 }
 
 const projectService = {
@@ -52,16 +54,7 @@ const projectService = {
                     reject(stderr);
                 }
 
-                const str = stdout;
-                const menuStrs = "│ App name │ id │ mode │ pid   │ status │ restart │ uptime │ cpu │ mem       │ user         │ watching";
-                const menuArr = menuStrs.split("│").map((data) => data.trim());
-                if (str.trim() !== "" ) {
-                    const valueArr = str.split("│").map((data) => data.trim());
-                    const pm = _.zipObject(menuArr, valueArr);
-                    resolve(pm);
-                } else {
-                    resolve();
-                }
+                resolve(getPmProcessInfo(stdout));
 
             });
         });
