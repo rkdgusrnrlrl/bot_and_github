@@ -27,9 +27,11 @@ const projectService = {
                     reject(stderr);
                 }
 
-                resolve(pm);
+                resolve(stdout);
             });
-        }).then(this.startProject);
+        })
+            .then(console.log)
+            .then(this.startProject);
     },
 
     showStatus : function () {
@@ -54,7 +56,7 @@ const projectService = {
 
     startProject : function () {
         return new Promise((resolve, reject) => {
-            exec("pm2 start --name server | grep server", function (err, stdout, stderr) {
+            exec("pm2 start server.js --name server | grep server", function (err, stdout, stderr) {
                 if (err) {
                     reject(err);
                 } else if (stderr) {
